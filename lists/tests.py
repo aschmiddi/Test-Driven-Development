@@ -18,12 +18,18 @@ class HomePageTest(TestCase):
             response = self.client.get("/")
             self.assertContains(response, "<title>To-Do lists</title>")
     """
-    # einfachere Variante
-    def test_home_page_returns_correct_html(self):
+    # einfachere Variante, aber testet Konstanten
+    """ def test_home_page_returns_correct_html(self):
+            response = self.client.get("/")
+            self.assertContains(response, "<title>To-Do lists</title>")
+            self.assertContains(response, "<html>")
+            self.assertContains(response, "</html>")
+    """
+    # testet das Template
+    def test_uses_home_template(self):
         response = self.client.get("/")
-        self.assertContains(response, "<title>To-Do lists</title>")
-        self.assertContains(response, "<html>")
-        self.assertContains(response, "</html>")
+        self.assertTemplateUsed(response, "home.html")
+
 
 
         
