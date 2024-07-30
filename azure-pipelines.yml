@@ -13,7 +13,7 @@ stages:
 - stage: deploy
   jobs:
   - deployment: DeployWeb
-    displayName: deploy Web App
+    displayName: first Pipeline run
     pool:
       vmImage: 'Ubuntu-latest'
     # creates an environment if it doesn't exist
