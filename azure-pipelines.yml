@@ -10,7 +10,7 @@ stages:
   - job: cloneRepository
     displayName: 'Clone the GitHub Repository'
     steps:
-    - script: git clone Test-Drive-Development
+    - script: git clone Test-Driven-Development
       displayName: 'copy of Test-Driven-Development'
 
 - stage: test
