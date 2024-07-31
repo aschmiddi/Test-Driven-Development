@@ -27,6 +27,8 @@ stages:
       runOnce:
         deploy:
           steps:
+          - script: ls
+            displayName: 'look at the given directories'
           - script: cd cloudwalker
             displayName: 'go into directory'
           - script: mkdir test
