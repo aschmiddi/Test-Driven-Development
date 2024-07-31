@@ -5,6 +5,14 @@ pool:
   vmImage: ubuntu-latest
 
 stages:
+- stage: clone
+  jobs:
+  - job: cloneRepository
+    displayName: 'Clone the GitHub Repository'
+    steps:
+    - script: git clone Test-Drive-Development
+      displayName: 'copy of Test-Driven-Development'
+
 - stage: test
   jobs:
   - job: RunTests
@@ -29,7 +37,8 @@ stages:
           steps:
           - script: ls
             displayName: 'look at the given directories'
-          - script: cd cloudwalker
-            displayName: 'go into directory'
-          - script: mkdir test
-            displayName: 'create a testdirectory'
+          - script: cp Test-Driven-Development
+            displayName: 'copy into vm'
+          - script: ls
+            displayName: 'check if directory exists'
+      
