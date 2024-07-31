@@ -4,6 +4,9 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
+variables:
+  sshKey: 'vm-cloudwalker_key.pem' 
+
 stages:
 
 - stage: test
@@ -30,6 +33,12 @@ stages:
           steps:
           - script: ls
             displayName: 'look at the given directories'
+          - script: |
+              mkdir -p ~/.ssh
+              cp $(sshKey.secureFilePath) ~/.ssh/vm-cloudwalker_key.pem
+              chmod 400 ~/.ssh/vm-cloudwalker_key.pem
+            displayName: 'setup ssh-key'
+
           - script: ssh -i vm-cloudwalker_key.pem azureuser@4.184.201.242
             displayName: 'log in into vm'
           - script: ls
