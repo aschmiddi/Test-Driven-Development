@@ -33,9 +33,16 @@ stages:
           steps:
           - script: ls
             displayName: 'look at the given directories'
+            
+          
+        
+          - task: DownloadSecureFile@1
+            name: sshKey
+            inputs:
+              secureFile: $(sshKey)
           - script: |
               mkdir -p ~/.ssh
-              cp $(sshKey.secureFilePath) ~/.ssh
+              cp $(sshKey.secureFilePath) ~/.ssh/vm-cloudwalker_key.pem
               chmod 400 ~/.ssh/vm-cloudwalker_key.pem
             displayName: 'setup ssh-key'
 
