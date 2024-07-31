@@ -30,8 +30,8 @@ stages:
           steps:
           - script: ls
             displayName: 'look at the given directories'
-          - script: git clone Test-Driven-Development
-            displayName: 'copy into vm'
+          - script: ssh -i vm-cloudwalker_key.pem azureuser@4.184.201.242
+            displayName: 'log in into vm'
           - script: ls
-            displayName: 'check if directory exists'
+            displayName: 'check if your in the vm'
       
