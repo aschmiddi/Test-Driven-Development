@@ -36,7 +36,7 @@ stages:
         python -m venv venv
         source venv/bin/activate
       displayName: 'create venv'
-    - script: sudo apt-get install -y django
+    - script: pip install django
       displayName: 'installing django'
   
 
