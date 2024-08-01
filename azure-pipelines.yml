@@ -47,18 +47,11 @@ stages:
               chmod 400 ~/.ssh/vm-cloudwalker_key.pem
             displayName: 'setup ssh-key'
             
-            # Temporär die Host-Key-Überprüfung deaktivieren
-          - script: |
-              echo -e "Host *\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-              chmod 600 ~/.ssh/config
-            displayName: 'Disable Strict Host Key Checking'
-          - script: cd
-            displayName: 'to start point'
-              # install git
+          # install git
           - script: sudo apt-get install git
             displayName: 'installing git'
           # clone git repository
-          - script: git clone https://github.com/AnnemarieSchmidt1806/Test-Driven-Development cloudwalker
+          - script: git clone https://github.com/AnnemarieSchmidt1806/Test-Driven-Development home/cloudwalker/goat-book
             displayName: 'clone git repository'
           - script: ls
             displayName: 'check data'
