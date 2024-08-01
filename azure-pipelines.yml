@@ -26,6 +26,17 @@ stages:
           versionSpec: '3.11'
           addToPath: true
           architecture: x64
+  - job: CreateVenvInstallDjango
+    displayName: 'create a virtuell environment and install django'
+    steps:
+    - script: |
+        python -m venv venv
+        source venv/bin/activate
+      displayName: 'create venv'
+    - script: sudo apt-get install -y django
+      displayName: 'installing django'
+  
+
   - job: RunTests
     displayName: 'Run Unit Tests'
     steps:
