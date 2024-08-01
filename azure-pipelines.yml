@@ -21,7 +21,7 @@ stages:
   - job: IstallPython
     displayName: 'installing Python'
     steps:
-    - script: sudo apt-get install python3.12.1
+    - script: sudo apt-get install python3.12
       displayName: 'Install Python'
   - job: RunTests
     displayName: 'Run Unit Tests'
