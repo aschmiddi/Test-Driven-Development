@@ -22,7 +22,7 @@ stages:
     - script: sudo apt-get install git
       displayName: 'installing git'
     # clone git repository
-    - script: git clone Test-Driven-Development data
+    - script: git clone AnnemarieSchmidt1806/Test-Driven-Development data
       displayName: 'clone git repository'
 
 - stage: deploy
