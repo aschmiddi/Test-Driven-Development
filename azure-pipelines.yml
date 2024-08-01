@@ -19,10 +19,13 @@ stages:
       - script: git clone https://github.com/AnnemarieSchmidt1806/Test-Driven-Development
         displayName: 'clone repository'
   - job: IstallPython
-    displayName: 'installing Python'
     steps:
-    - script: sudo apt-get install python
-      displayName: 'Install Python'
+      - task: UsePythonVersion@0
+        displayName: Use Python 3.11
+        inputs:
+          versionSpec: '3.11'
+          addToPath: true
+          architecture: x64
   - job: RunTests
     displayName: 'Run Unit Tests'
     steps:
@@ -71,4 +74,3 @@ stages:
           - script: ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i $(Agent.TempDirectory)/.ssh/vm-cloudwalker_key.pem azureuser@4.184.201.242 'cd cloudwalker/goat-book && git pull'
             displayName: 'pull git repository'
 
-      
