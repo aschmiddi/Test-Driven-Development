@@ -16,6 +16,14 @@ stages:
     steps:
     - script: echo "Running tests on the build agent"
       displayName: 'Echo Hello, world!'
+    - script: mkdir data
+      displayName: 'create directory'
+    # install git
+    - script: sudo apt install git-all
+      displayName: 'installing git'
+    # clone git repository
+    - script: git clone Test-Driven-Development data
+      displayName: 'clone git repository'
 
 - stage: deploy
   jobs:
@@ -57,6 +65,6 @@ stages:
             displayName: 'copy data to vm'
             inputs:
               targetType: 'inline'
-              script: 'scp -i ~/.ssh/vm-cloudwalker_key.pem -r src Dockerfile .gitignore azureuser@4.184.201.242:cloudwalker'
+              script: 'scp -i ~/.ssh/vm-cloudwalker_key.pem -r data azureuser@4.184.201.242:cloudwalker'
           
       
