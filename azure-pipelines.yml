@@ -46,12 +46,23 @@ stages:
               cp $(sshKey.secureFilePath) ~/.ssh/vm-cloudwalker_key.pem
               chmod 400 ~/.ssh/vm-cloudwalker_key.pem
             displayName: 'setup ssh-key'
+
+          # Temporär die Host-Key-Überprüfung deaktivieren
+          - script: |
+              echo -e "Host *\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+              chmod 600 ~/.ssh/config
+            displayName: 'Disable Strict Host Key Checking'
+
+          # auf VM zugreifen
+          - script: ssh -i ~/.ssh/vm-cloudwalker_key.pem azureuser@4.184.201.242
+            displayName: 'log in into vm'
+          
             
           # install git
           - script: sudo apt-get install git
             displayName: 'installing git'
           # clone git repository
-          - script: git clone https://github.com/AnnemarieSchmidt1806/Test-Driven-Development home/cloudwalker/goat-book
+          - script: git clone https://github.com/AnnemarieSchmidt1806/Test-Driven-Development cloudwalker/goat-book
             displayName: 'clone git repository'
           - script: ls
             displayName: 'check data'
