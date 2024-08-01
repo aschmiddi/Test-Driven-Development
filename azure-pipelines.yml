@@ -18,13 +18,11 @@ stages:
         displayName: 'install git'
       - script: git clone https://github.com/AnnemarieSchmidt1806/Test-Driven-Development
         displayName: 'clone repository'
-  - job: InstallDockerAndStart
-    displayName: "installing docker and run"
+  - job: IstallPython
+    displayName: 'installing Python'
     steps:
-      - script: sudo apt-get install -y docker
-        displayName: 'install docker'
-      - script: docker build -t superlists . && docker run -p 80:80 -it superlists
-        displayName: 'build and run docker'
+    - script: sudo apt-get install python3.12.1
+      displayName: 'Install Python'
   - job: RunTests
     displayName: 'Run Unit Tests'
     steps:
