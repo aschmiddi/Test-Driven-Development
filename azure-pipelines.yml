@@ -59,8 +59,8 @@ stages:
           # install git
           - script: ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i $(Agent.TempDirectory)/.ssh/vm-cloudwalker_key.pem azureuser@4.184.201.242 'sudo apt-get update && sudo apt-get install -y git'
             displayName: 'installing git'
-          # clone git repository
-          - script: ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i $(Agent.TempDirectory)/.ssh/vm-cloudwalker_key.pem azureuser@4.184.201.242 'git clone https://github.com/AnnemarieSchmidt1806/Test-Driven-Development cloudwalker/goat-book'
-            displayName: 'clone git repository'
+          # pull git repository
+          - script: ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i $(Agent.TempDirectory)/.ssh/vm-cloudwalker_key.pem azureuser@4.184.201.242 'cd cloudwalker/goat-book && git pull'
+            displayName: 'pull git repository'
 
       
