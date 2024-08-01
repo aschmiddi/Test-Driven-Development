@@ -24,6 +24,8 @@ stages:
     # clone git repository
     - script: git clone https://github.com/AnnemarieSchmidt1806/Test-Driven-Development data
       displayName: 'clone git repository'
+    - script: ls
+      displayName: 'check data'
 
 - stage: deploy
   jobs:
@@ -60,6 +62,8 @@ stages:
               chmod 600 ~/.ssh/config
             displayName: 'Disable Strict Host Key Checking'
 
+          - script: ls
+            displayName: 'check data again'
             # auf VM kopieren
           - task: Bash@3
             displayName: 'copy data to vm'
