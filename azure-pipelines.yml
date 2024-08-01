@@ -16,16 +16,7 @@ stages:
     steps:
     - script: echo "Running tests on the build agent"
       displayName: 'Echo Hello, world!'
-    - script: mkdir data
-      displayName: 'create directory'
-    # install git
-    - script: sudo apt-get install git
-      displayName: 'installing git'
-    # clone git repository
-    - script: git clone https://github.com/AnnemarieSchmidt1806/Test-Driven-Development data
-      displayName: 'clone git repository'
-    - script: ls
-      displayName: 'check data'
+
 
 - stage: deploy
   jobs:
@@ -61,14 +52,14 @@ stages:
               echo -e "Host *\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
               chmod 600 ~/.ssh/config
             displayName: 'Disable Strict Host Key Checking'
-
+          - script: cd
+            displayName: 'to start point'
+              # install git
+          - script: sudo apt-get install git
+            displayName: 'installing git'
+          # clone git repository
+          - script: git clone https://github.com/AnnemarieSchmidt1806/Test-Driven-Development cloudwalker
+            displayName: 'clone git repository'
           - script: ls
-            displayName: 'check data again'
-            # auf VM kopieren
-          - task: Bash@3
-            displayName: 'copy data to vm'
-            inputs:
-              targetType: 'inline'
-              script: 'scp -i ~/.ssh/vm-cloudwalker_key.pem -r data azureuser@4.184.201.242:cloudwalker'
-          
+            displayName: 'check data'
       
