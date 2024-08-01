@@ -18,7 +18,9 @@ stages:
         displayName: 'install git'
       - script: git clone https://github.com/AnnemarieSchmidt1806/Test-Driven-Development
         displayName: 'clone repository'
-  - job: IstallPython
+  - job: InstallPython
+    displayName: "installing python"
+    dependsOn: InstallGitAndCloneRepository
     steps:
       - task: UsePythonVersion@0
         displayName: Use Python 3.11
@@ -28,6 +30,7 @@ stages:
           architecture: x64
   - job: CreateVenvInstallDjango
     displayName: 'create a virtuell environment and install django'
+    dependsOn: InstallPython
     steps:
     - script: |
         python -m venv venv
@@ -39,6 +42,7 @@ stages:
 
   - job: RunTests
     displayName: 'Run Unit Tests'
+    dependsOn: CreateVenvInstallDjango
     steps:
       - script: python src/manage.py test functional_tests
         displayName: 'run tests'
