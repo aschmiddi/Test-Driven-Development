@@ -38,14 +38,8 @@ stages:
       displayName: 'create venv'
     - script: pip install django
       displayName: 'installing django'
-  
-
-  - job: RunTests
-    displayName: 'Run Unit Tests'
-    dependsOn: CreateVenvInstallDjango
-    steps:
-      - script: python src/manage.py test functional_tests
-        displayName: 'run tests'
+    - script: python src/manage.py test functional_tests
+      displayName: 'run tests'
 
 - stage: deploy
   jobs:
