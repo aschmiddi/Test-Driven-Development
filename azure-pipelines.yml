@@ -35,11 +35,13 @@ stages:
     - script: |
         python -m venv venv
         source venv/bin/activate
-      displayName: 'create venv'
-    - script: pip install django
+      displayName: 'create venv and activate'
+    - script: pip install django<4.3
       displayName: 'installing django'
     - script: pip install selenium
       displayName: 'installing selenium'
+    - script: python -c "from selenium import webdriver; webdriver.Firefox()"
+      displayName: 'test connection to webdriver'
     - script: python src/manage.py test functional_tests
       displayName: 'run tests'
 
