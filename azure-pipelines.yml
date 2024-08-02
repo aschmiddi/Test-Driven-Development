@@ -40,6 +40,14 @@ stages:
       displayName: 'installing django'
     - script: pip install 'selenium'
       displayName: 'installing selenium'
+    - task: VSTest@3
+      inputs:
+        testSelector: 'testAssemblies'
+        testAssemblyVer2: 'tests.py'
+        searchFolder: 'src/functional_tests'
+        resultsFolder: 
+      displayName: 'VS test'
+
     - script: python -c "from selenium import webdriver; webdriver.Firefox()"
       displayName: 'test connection to webdriver'
     - script: python src/manage.py test functional_tests
