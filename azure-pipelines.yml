@@ -38,6 +38,8 @@ stages:
       displayName: 'create venv'
     - script: pip install django
       displayName: 'installing django'
+    - script: pip install selenium
+      displayName: 'installing selenium'
     - script: python src/manage.py test functional_tests
       displayName: 'run tests'
 
