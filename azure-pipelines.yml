@@ -1,0 +1,97 @@
+trigger:
+- master
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  sshKey: 'vm-cloudwalker_key.pem' 
+
+stages:
+
+- stage: test
+  jobs:
+  - job: InstallGitAndCloneRepository
+    displayName: 'installing git and clone repository'
+    steps:
+      - script: sudo apt-get install -y git
+        displayName: 'install git'
+      - script: git clone https://github.com/AnnemarieSchmidt1806/Test-Driven-Development
+        displayName: 'clone repository'
+  - job: InstallPython
+    displayName: "installing python"
+    dependsOn: InstallGitAndCloneRepository
+    steps:
+      - task: UsePythonVersion@0
+        displayName: Use Python 3.11
+        inputs:
+          versionSpec: '3.11'
+          addToPath: true
+          architecture: x64
+  - job: CreateVenvInstallDjango
+    displayName: 'create a virtuell environment and install django'
+    dependsOn: InstallPython
+    steps:
+    - script: |
+        python -m venv venv
+        source venv/bin/activate
+      displayName: 'create venv and activate'
+    - script: pip install 'django<4.3'
+      displayName: 'installing django'
+    - script: pip install 'selenium'
+      displayName: 'installing selenium'
+    - task: VSTest@3
+      inputs:
+        testSelector: 'testAssemblies'
+        testAssemblyVer2: 'tests.py'
+        searchFolder: 'src/functional_tests'
+        resultsFolder: 
+      displayName: 'VS test'
+
+    - script: python -c "from selenium import webdriver; webdriver.Firefox()"
+      displayName: 'test connection to webdriver'
+    - script: python src/manage.py test functional_tests
+      displayName: 'run tests'
+
+- stage: deploy
+  jobs:
+  - deployment: DeployWeb
+    displayName: 'Deploy and Test on VM'
+    pool:
+      vmImage: 'ubuntu-latest'
+    environment: 
+      name: 'environment-aschmidt-cloudwalker'
+      resourceName: vm-cloudwalker
+      resourceType: virtualMachine
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - script: ls
+            displayName: 'look at the given directories'
+            
+          
+        # den SSH-Schlüssel herunterladen
+          - task: DownloadSecureFile@1
+            name: sshKey
+            inputs:
+              secureFile: $(sshKey)
+          - script: |
+              mkdir -p $(Agent.TempDirectory)/.ssh
+              cp $(sshKey.secureFilePath) $(Agent.TempDirectory)/.ssh/vm-cloudwalker_key.pem
+              chmod 600 $(Agent.TempDirectory)/.ssh/vm-cloudwalker_key.pem
+            displayName: 'setup ssh-key'
+
+          # Temporär die Host-Key-Überprüfung deaktivieren
+          - script: |
+              echo -e "Host *\n\tStrictHostKeyChecking no\n" >> $(Agent.TempDirectory)/.ssh/config
+              chmod 600 $(Agent.TempDirectory)/.ssh/config
+            displayName: 'Disable Strict Host Key Checking'
+
+          # install git
+          - script: ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i $(Agent.TempDirectory)/.ssh/vm-cloudwalker_key.pem azureuser@4.184.201.242 'sudo apt-get update && sudo apt-get install -y git'
+            displayName: 'installing git'
+          # pull git repository
+          - script: ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i $(Agent.TempDirectory)/.ssh/vm-cloudwalker_key.pem azureuser@4.184.201.242 'cd cloudwalker/goat-book && git pull'
+            displayName: 'pull git repository'
+
