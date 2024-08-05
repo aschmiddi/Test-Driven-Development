@@ -42,6 +42,13 @@ stages:
       displayName: 'installing selenium'
     - script: sudo apt-get install firefox
       displayName: 'installing Firefox'
+    - script: |
+        wget https://github.com/mozilla/geckodriver/releases/download/v0.26.0/geckodriver-v0.26.0-linux64.tar.gz
+        sudo tar -xvf geckodriver-v0.26.0-linux64.tar.gz
+        sudo mv geckodriver /usr/local/bin/
+        cd /usr/local/bin/
+        sudo chmod +x geckodriver
+      displayName: 'setup geckodriver'
     - script: python -c "from selenium import webdriver; webdriver.Firefox()"
       displayName: 'test connection to webdriver'
     - script: python src/manage.py test functional_tests
