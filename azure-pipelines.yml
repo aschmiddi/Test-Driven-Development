@@ -37,8 +37,10 @@ stages:
         python -m venv venv
         source venv/bin/activate
       displayName: 'create venv, install requirements and run tests'
-    - script: pip install 'django<4.3'
-      displayName: 'installing django'
+    - script: pip install -r requirements.txt
+      displayName: 'installing requirements'
+    #- script: pip install 'django<4.3'
+    #  displayName: 'installing django'
     - script: pip install 'selenium'
       displayName: 'installing selenium'
     - script: sudo apt-get install firefox
