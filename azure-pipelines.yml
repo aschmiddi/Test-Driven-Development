@@ -50,8 +50,8 @@ stages:
         sudo mv geckodriver /usr/local/bin/
       displayName: 'setup geckodriver'
       
-    - script: python -c "from selenium import webdriver; webdriver.Firefox()"
-      displayName: 'test connection to webdriver'
+    #- script: python -c "from selenium import webdriver; webdriver.Firefox()"
+    #  displayName: 'test connection to webdriver'
     - script: python src/manage.py test functional_tests
       displayName: 'run tests'
 
