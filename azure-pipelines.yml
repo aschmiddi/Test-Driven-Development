@@ -7,6 +7,7 @@ pool:
 variables:
   sshKey: 'vm-cloudwalker_key.pem' 
 
+
 stages:
 
 - stage: test
@@ -35,24 +36,21 @@ stages:
     - script: |
         python -m venv venv
         source venv/bin/activate
-      displayName: 'create venv and activate'
+      displayName: 'create venv, install requirements and run tests'
     - script: pip install 'django<4.3'
       displayName: 'installing django'
     - script: pip install 'selenium'
       displayName: 'installing selenium'
     - script: sudo apt-get install firefox
       displayName: 'installing Firefox'
-    - script: |
-        wget https://github.com/mozilla/geckodriver/releases/download/v0.26.0/geckodriver-v0.26.0-linux64.tar.gz
-        sudo tar -xvf geckodriver-v0.26.0-linux64.tar.gz
-        sudo mv geckodriver /usr/local/bin/
-        cd /usr/local/bin/
-        sudo chmod +x geckodriver
+    - script: sudo apt-get install firefox-geckodriver
       displayName: 'setup geckodriver'
+      
     - script: python -c "from selenium import webdriver; webdriver.Firefox()"
       displayName: 'test connection to webdriver'
     - script: python src/manage.py test functional_tests
       displayName: 'run tests'
+
 
 - stage: deploy
   jobs:
