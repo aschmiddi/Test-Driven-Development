@@ -41,11 +41,12 @@ stages:
       displayName: 'installing django'
     - script: pip install 'selenium'
       displayName: 'installing selenium'
-   # - script: sudo apt-get install firefox
-   #   displayName: 'installing Firefox'
+    - script: sudo apt-get install firefox
+      displayName: 'installing Firefox'
     - script: |
-        sudo apt-get update
-        sudo apt-get install firefox-geckodriver
+        wget https://github.com/mozilla/geckodriver/releases/download/v0.34.0/geckodriver-v0.34.0-linux-aarch64.tar.gz
+        tar -xvzf geckodriver*
+        chmod +x geckodriver
       displayName: 'setup geckodriver'
       
     - script: python -c "from selenium import webdriver; webdriver.Firefox()"
