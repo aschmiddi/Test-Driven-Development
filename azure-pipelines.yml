@@ -44,8 +44,8 @@ stages:
     - script: sudo apt-get install firefox
       displayName: 'installing Firefox'
     - script: |
-        wget https://github.com/mozilla/geckodriver/releases/latest/download/geckodriver-v0.32.0-linux64.tar.gz
-        tar -xvzf geckodriver-v0.32.0-linux64.tar.gz
+        wget https://github.com/mozilla/geckodriver/releases/download/v0.34.0/geckodriver-v0.34.0-linux32.tar.gz
+        tar -xvzf geckodriver-v0.34.0-linux32.tar.gz
         chmod +x geckodriver
         sudo mv geckodriver /usr/local/bin/
       displayName: 'setup geckodriver'
