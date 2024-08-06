@@ -12,26 +12,8 @@ stages:
 
 - stage: test
   jobs:
-  - job: InstallGitAndCloneRepository
-    displayName: 'installing git and clone repository'
-    steps:
-      - script: sudo apt-get install -y git
-        displayName: 'install git'
-      - script: git clone https://github.com/AnnemarieSchmidt1806/Test-Driven-Development
-        displayName: 'clone repository'
-  - job: InstallPython
-    displayName: "installing python"
-    dependsOn: InstallGitAndCloneRepository
-    steps:
-      - task: UsePythonVersion@0
-        displayName: Use Python 3.11
-        inputs:
-          versionSpec: '3.11'
-          addToPath: true
-          architecture: x64
   - job: CreateVenvInstallRequirementsRunTests
     displayName: 'create a virtuell environment, install requirements and run the tests'
-    dependsOn: InstallPython
     steps:
     - script: |
         python -m venv venv
