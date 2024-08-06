@@ -29,14 +29,14 @@ stages:
           versionSpec: '3.11'
           addToPath: true
           architecture: x64
-  - job: CreateVenvInstallDjango
-    displayName: 'create a virtuell environment and install django'
+  - job: CreateVenvInstallRequirementsRunTests
+    displayName: 'create a virtuell environment, install requirements and run the tests'
     dependsOn: InstallPython
     steps:
     - script: |
         python -m venv venv
         source venv/bin/activate
-      displayName: 'create venv, install requirements and run tests'
+      displayName: 'create venv'
     - script: pip install -r requirements.txt
       displayName: 'installing requirements'
     #- script: pip install 'django<4.3'
