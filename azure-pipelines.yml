@@ -60,5 +60,5 @@ stages:
               chmod 600 $(Agent.TempDirectory)/.ssh/vm-cloudwalker_key.pem
             displayName: 'setup ssh-key'
 
-          - script: scp -i $(Agent.TempDirectory)/.ssh/vm-cloudwalker_key.pem -r $(Pipeline.Workspace)/Test-Driven-Development azureuser@4.184.201.242:cloudwalker/goat-book
+          - script: scp -i $(Agent.TempDirectory)/.ssh/vm-cloudwalker_key.pem -r $(Pipeline.Workspace)/Test-Driven-Development/s/* azureuser@4.184.201.242:cloudwalker/goat-book
             displayName: 'copy repository to azure vm'
