@@ -19,7 +19,7 @@ stages:
         python -m venv .venv
         source .venv/bin/activate
       displayName: 'create virtual environment'
-    - script: sudo apt-get install django<4.3
+    - script: pip install 'django<4.3'
       displayName: 'install django'
     - script: python src/manage.py test src/lists
       displayName: 'run tests'
