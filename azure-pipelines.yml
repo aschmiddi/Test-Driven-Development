@@ -65,6 +65,8 @@ stages:
               echo -e "Host *\n\tStrictHostKeyChecking no\n" >> $(Agent.TempDirectory)/.ssh/config
               chmod 600 $(Agent.TempDirectory)/.ssh/config
             displayName: 'Disable Strict Host Key Checking'
+          - script: ls
+            displayName: 'checkout'
 
-          - script: scp -i $(Agent.TempDirectory)/.ssh/vm-cloudwalker_key.pem -r Test-Driven-Development azureuser@4.184.201.242:cloudwalker/goat-book
+          - script: scp -i $(Agent.TempDirectory)/.ssh/vm-cloudwalker_key.pem -r $(Pipeline.Workspace)/Test-Driven-Development azureuser@4.184.201.242:cloudwalker/goat-book
             displayName: 'copy repository to azure vm'
