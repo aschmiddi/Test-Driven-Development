@@ -23,6 +23,12 @@ stages:
       displayName: 'install requirements'
     - script: python src/manage.py test src/lists
       displayName: 'run tests'
+    - task: PublishPipelineArtifact@1
+      inputs:
+        targetPath: '$(Pipeline.Workspace)'
+        artifact: 'Test-Driven-Development'
+        publishLocation: 'pipeline'
+      displayName: 'publish artifact'
 
 
 - stage: deploy
@@ -60,10 +66,5 @@ stages:
               chmod 600 $(Agent.TempDirectory)/.ssh/config
             displayName: 'Disable Strict Host Key Checking'
 
-          # install git
-          - script: ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i $(Agent.TempDirectory)/.ssh/vm-cloudwalker_key.pem azureuser@4.184.201.242 'sudo apt-get update && sudo apt-get install -y git'
-            displayName: 'installing git'
-          # pull git repository
-          - script: ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i $(Agent.TempDirectory)/.ssh/vm-cloudwalker_key.pem azureuser@4.184.201.242 'cd cloudwalker/goat-book && git pull'
-            displayName: 'pull git repository'
-
+          - script: scp Test-Driven-Development azureuser@4.184.201.242:cloudwalker/goat-book
+            displayName: 'copy repository to azure vm'
