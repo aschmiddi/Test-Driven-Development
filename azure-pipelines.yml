@@ -12,29 +12,10 @@ stages:
 
 - stage: test
   jobs:
-  - job: CreateVenvInstallRequirementsRunTests
-    displayName: 'create a virtuell environment, install requirements and run the tests'
+  - job: RunUnitTests
+    displayName: 'run unittests'
     steps:
-    - script: |
-        python -m venv venv
-        source venv/bin/activate
-      displayName: 'create venv'
-    - script: pip install -r requirements.txt
-      displayName: 'installing requirements'
-    - script: pip install 'selenium'
-      displayName: 'installing selenium'
-    - script: sudo apt-get install firefox
-      displayName: 'installing Firefox'
-    - script: |
-        wget https://github.com/mozilla/geckodriver/releases/download/v0.34.0/geckodriver-v0.34.0-linux32.tar.gz
-        tar -xvzf geckodriver-v0.34.0-linux32.tar.gz
-        chmod +x geckodriver
-        sudo mv geckodriver /usr/local/bin/
-      displayName: 'setup geckodriver'
-      
-    #- script: python -c "from selenium import webdriver; webdriver.Firefox()"
-    #  displayName: 'test connection to webdriver'
-    - script: python src/manage.py test functional_tests
+    - script: python src/manage.py test src/lists
       displayName: 'run tests'
 
 
