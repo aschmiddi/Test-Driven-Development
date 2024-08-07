@@ -7,51 +7,29 @@ pool:
 variables:
   sshKey: 'vm-cloudwalker_key.pem' 
 
+
 stages:
 
 - stage: test
   jobs:
-  - job: InstallGitAndCloneRepository
-    displayName: 'installing git and clone repository'
+  - job: RunUnitTests
+    displayName: 'run unittests'
     steps:
-      - script: sudo apt-get install -y git
-        displayName: 'install git'
-      - script: git clone https://github.com/AnnemarieSchmidt1806/Test-Driven-Development
-        displayName: 'clone repository'
-  - job: InstallPython
-    displayName: "installing python"
-    dependsOn: InstallGitAndCloneRepository
-    steps:
-      - task: UsePythonVersion@0
-        displayName: Use Python 3.11
-        inputs:
-          versionSpec: '3.11'
-          addToPath: true
-          architecture: x64
-  - job: CreateVenvInstallDjango
-    displayName: 'create a virtuell environment and install django'
-    dependsOn: InstallPython
-    steps:
-    - script: |
-        python -m venv venv
-        source venv/bin/activate
-      displayName: 'create venv and activate'
-    - script: pip install 'django<4.3'
-      displayName: 'installing django'
-    - script: pip install 'selenium'
-      displayName: 'installing selenium'
-    - task: VSTest@3
-      inputs:
-        testSelector: 'testAssemblies'
-        testAssemblyVer2: 'tests.py'
-        searchFolder: 'src/functional_tests'
-        resultsFolder: 
-      displayName: 'VS test'
-
-    - script: python -c "from selenium import webdriver; webdriver.Firefox()"
-      displayName: 'test connection to webdriver'
-    - script: python src/manage.py test functional_tests
+    - script: | 
+        python -m venv .venv
+        source .venv/bin/activate
+      displayName: 'create virtual environment'
+    - script: pip install -r requirements.txt
+      displayName: 'install requirements'
+    - script: python src/manage.py test src/lists
       displayName: 'run tests'
+    - task: PublishPipelineArtifact@1
+      inputs:
+        targetPath: '$(Pipeline.Workspace)'
+        artifact: 'Test-Driven-Development'
+        publishLocation: 'pipeline'
+      displayName: 'publish artifact'
+
 
 - stage: deploy
   jobs:
@@ -87,11 +65,11 @@ stages:
               echo -e "Host *\n\tStrictHostKeyChecking no\n" >> $(Agent.TempDirectory)/.ssh/config
               chmod 600 $(Agent.TempDirectory)/.ssh/config
             displayName: 'Disable Strict Host Key Checking'
+          - script: |
+              rm -r cloudwalker
+            displayName: 'checkout'
+          - script: ls
+            displayName: 'clean'
 
-          # install git
-          - script: ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i $(Agent.TempDirectory)/.ssh/vm-cloudwalker_key.pem azureuser@4.184.201.242 'sudo apt-get update && sudo apt-get install -y git'
-            displayName: 'installing git'
-          # pull git repository
-          - script: ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i $(Agent.TempDirectory)/.ssh/vm-cloudwalker_key.pem azureuser@4.184.201.242 'cd cloudwalker/goat-book && git pull'
-            displayName: 'pull git repository'
-
+          - script: scp -i $(Agent.TempDirectory)/.ssh/vm-cloudwalker_key.pem -r $(Pipeline.Workspace)/Test-Driven-Development azureuser@4.184.201.242:cloudwalker/goat-book
+            displayName: 'copy repository to azure vm'
