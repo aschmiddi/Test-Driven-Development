@@ -66,8 +66,8 @@ stages:
               chmod 600 $(Agent.TempDirectory)/.ssh/config
             displayName: 'Disable Strict Host Key Checking'
           - script: |
-              rm home
-              rm test
+              rm -r home
+              rm -r test
             displayName: 'checkout'
           - script: ls
             displayName: 'clean'
