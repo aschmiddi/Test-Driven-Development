@@ -19,8 +19,8 @@ stages:
         python -m venv .venv
         source .venv/bin/activate
       displayName: 'create virtual environment'
-    - script: pip install 'django<4.3'
-      displayName: 'install django'
+    - script: pip install -r requirements.txt
+      displayName: 'install requirements'
     - script: python src/manage.py test src/lists
       displayName: 'run tests'
 
