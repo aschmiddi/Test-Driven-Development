@@ -34,7 +34,7 @@ stages:
 - stage: deploy
   jobs:
   - deployment: DeployWeb
-    displayName: 'Deploy and Test on VM'
+    displayName: 'Deploy on VM'
     pool:
       vmImage: 'ubuntu-latest'
     environment: 
@@ -45,10 +45,6 @@ stages:
       runOnce:
         deploy:
           steps:
-          - script: ls
-            displayName: 'look at the given directories'
-            
-          
         # den SSH-Schlüssel herunterladen
           - task: DownloadSecureFile@1
             name: sshKey
@@ -59,6 +55,6 @@ stages:
               cp $(sshKey.secureFilePath) $(Agent.TempDirectory)/.ssh/vm-cloudwalker_key.pem
               chmod 600 $(Agent.TempDirectory)/.ssh/vm-cloudwalker_key.pem
             displayName: 'setup ssh-key'
-
+          # Pipeline artifact auf Azure VM kopieren
           - script: scp -i $(Agent.TempDirectory)/.ssh/vm-cloudwalker_key.pem -r $(Pipeline.Workspace)/Test-Driven-Development/s/* azureuser@4.184.201.242:cloudwalker/goat-book
             displayName: 'copy repository to azure vm'
